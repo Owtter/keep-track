@@ -24,25 +24,6 @@
             <ul id="scoreList"></ul>
         </div>
     </div>
-
-    <script>
-        const scoreForm = document.getElementById('scoreForm');
-        const scoreList = document.getElementById('scoreList');
-
-        scoreForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const player = document.getElementById('player').value;
-            const score = document.getElementById('score').value;
-
-            if (player && score) {
-                const listItem = document.createElement('li');
-                listItem.textContent = `${player}: ${score}`;
-                scoreList.appendChild(listItem);
-
-                scoreForm.reset();
-            }
-        });
-    </script>
+    <script src="myscripts.js"></script>
 </body>
 </html>
