@@ -3,27 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Card Game Score Tracker</title>
-    <link rel="stylesheet" href="index.css">
+    <title>Bieberbande Game Tracker</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Score Tracker</h1>
-        <form id="scoreForm">
-            <label for="player">Player Name</label>
-            <input type="text" id="player" name="player" required>
-
-            <label for="score">Score</label>
-            <input type="text" id="score" name="score" required>
-
-            <button type="submit">Add Score</button>
-        </form>
-
-        <div class="scoreboard">
-            <h2>Scoreboard</h2>
-            <ul id="scoreList"></ul>
+    <header>
+        <div class="logo">
+            <h1>Bieberbande Tracker</h1>
         </div>
+        <nav>
+            <ul id="navbar">
+                <li><a href="#" id="create-game">Create Game</a></li>
+                <li><a href="#" id="profile-link" class="hidden">Profile</a></li>
+                <li><a href="#" id="login-link" class="visible">Login</a></li>
+                <li><a href="#" id="signup-link" class="visible">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Sign-up Form -->
+    <div id="signup-form" class="modal hidden">
+        <h2>Sign Up</h2>
+        <form id="signup">
+            <input type="text" id="signup-username" placeholder="Enter Username" required />
+            <input type="password" id="signup-password" placeholder="Enter Password" required />
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="#" id="show-login">Login</a></p>
     </div>
-    <script src="myscripts.js"></script>
+
+    <!-- Login Form -->
+    <div id="login-form" class="modal hidden">
+        <h2>Login</h2>
+        <form id="login">
+            <input type="text" id="login-username" placeholder="Enter Username" required />
+            <input type="password" id="login-password" placeholder="Enter Password" required />
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="#" id="show-signup">Sign Up</a></p>
+    </div>
+
+    <!-- Game Creation Form -->
+    <div id="create-game-form" class="modal hidden">
+        <h2>Create a New Game</h2>
+        <form id="create-game-form-content">
+            <input type="text" id="game-name" placeholder="Game Name" required />
+            <input type="number" id="player-count" placeholder="Number of Players" required />
+            <button type="submit">Create Game</button>
+        </form>
+    </div>
+
+    <main>
+        <div id="game-list">
+            <h2>Games List</h2>
+            <ul id="games">
+                <!-- Game list will be populated dynamically -->
+            </ul>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
 </body>
 </html>
