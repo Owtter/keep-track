@@ -1,63 +1,93 @@
-        const gameForm = document.getElementById('gameForm');
-        const gameContainer = document.getElementById('gameContainer');
-        const currentGameName = document.getElementById('currentGameName');
-        const playerInputs = document.getElementById('playerInputs');
-        const roundForm = document.getElementById('roundForm');
-        const scoreList = document.getElementById('scoreList');
+// Elements
+const loginLink = document.getElementById("login-link");
+const signupLink = document.getElementById("signup-link");
+const profileLink = document.getElementById("profile-link");
+const signupForm = document.getElementById("signup-form");
+const loginForm = document.getElementById("login-form");
+const createGameForm = document.getElementById("create-game-form");
+const navbar = document.getElementById("navbar");
+const gameList = document.getElementById("games");
 
-        let players = [];
-        let scores = {};
+let currentUser = null; // Placeholder for current user
 
-        gameForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+// Show and hide modals
+function toggleModal(modal) {
+    modal.classList.toggle("hidden");
+}
 
-            const gameName = document.getElementById('gameName').value;
-            players = document.getElementById('players').value.split(',').map(player => player.trim());
+loginLink.addEventListener("click", () => toggleModal(loginForm));
+signupLink.addEventListener("click", () => toggleModal(signupForm));
 
-            if (gameName && players.length > 0) {
-                currentGameName.textContent = gameName;
-                playerInputs.innerHTML = '';
-                scoreList.innerHTML = '';
-                scores = {};
+const showLogin = document.getElementById("show-login");
+const showSignup = document.getElementById("show-signup");
 
-                players.forEach(player => {
-                    scores[player] = 0;
-                    const inputContainer = document.createElement('div');
-                    const label = document.createElement('label');
-                    const input = document.createElement('input');
+showLogin.addEventListener("click", () => {
+    toggleModal(signupForm);
+    toggleModal(loginForm);
+});
 
-                    label.textContent = `${player}'s Score:`;
-                    input.type = 'text';
-                    input.name = player;
-                    input.required = true;
+showSignup.addEventListener("click", () => {
+    toggleModal(loginForm);
+    toggleModal(signupForm);
+});
 
-                    inputContainer.appendChild(label);
-                    inputContainer.appendChild(input);
-                    playerInputs.appendChild(inputContainer);
-                });
+// Handle signup
+const signup = document.getElementById("signup");
+signup.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const username = document.getElementById("signup-username").value;
+    const password = document.getElementById("signup-password").value;
+    // Here you would call your backend to register the user
+    currentUser = { username }; // Placeholder user
+    updateNavbar();
+    toggleModal(signupForm);
+});
 
-                gameForm.reset();
-                gameContainer.style.display = 'block';
-            }
-        });
+// Handle login
+const login = document.getElementById("login");
+login.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const username = document.getElementById("login-username").value;
+    const password = document.getElementById("login-password").value;
+    // Here you would call your backend to authenticate the user
+    currentUser = { username }; // Placeholder user
+    updateNavbar();
+    toggleModal(loginForm);
+});
 
-        roundForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+// Update navbar based on user state
+function updateNavbar() {
+    if (currentUser) {
+        profileLink.classList.remove("hidden");
+        loginLink.classList.add("hidden");
+        signupLink.classList.add("hidden");
+        profileLink.textContent = `${currentUser.username}'s Profile`;
+    } else {
+        profileLink.classList.add("hidden");
+        loginLink.classList.remove("hidden");
+        signupLink.classList.remove("hidden");
+    }
+}
 
-            const roundScores = Array.from(playerInputs.querySelectorAll('input')).map(input => {
-                return {
-                    player: input.name,
-                    score: parseInt(input.value, 10) || 0
-                };
-            });
+// Handle game creation
+const createGame = document.getElementById("create-game-form-content");
+createGame.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const gameName = document.getElementById("game-name").value;
+    const playerCount = document.getElementById("player-count").value;
+    // Here you would call your backend to create the game
+    const game = { gameName, playerCount };
+    addGameToList(game);
+    toggleModal(createGameForm);
+});
 
-            const roundSummary = document.createElement('li');
-            roundSummary.textContent = roundScores.map(rs => `${rs.player}: +${rs.score}`).join(', ');
-            scoreList.appendChild(roundSummary);
+// Add new game to the list
+function addGameToList(game) {
+    const li = document.createElement("li");
+    li.textContent = `${game.gameName} with ${game.playerCount} players`;
+    gameList.appendChild(li);
+}
 
-            roundScores.forEach(({ player, score }) => {
-                scores[player] += score;
-            });
-
-            playerInputs.querySelectorAll('input').forEach(input => input.value = '');
-        });
+// Game creation link
+const createGameLink = document.getElementById("create-game");
+createGameLink.addEventListener("click", () => toggleModal(createGameForm));
